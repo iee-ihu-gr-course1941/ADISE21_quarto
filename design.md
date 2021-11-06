@@ -28,4 +28,25 @@
 * password-hash: String
 * access-token: String
 
+# Api spec
+
+## Session
+* CRUD: standard crud operations
+* join: player2 joins game, game is now considered full and starts
+
+## Piece
+* Read: standard read
+
+## Placement
+* create: create triggers multiple actions:
+** validate that there isnt another placement of the same session in the same pos-x pos-y
+** set-turn: when a placement has been made, the other player gets their turn
+** detect-win: after a placement, the board is validated for a winning state. If detected, 
+	the player who made the placement is declared winner is set in the session entity
+
+## User
+* create: standard creation (password is hashed)
+* read: standard read
+* login: compare username and hashed password to stored ones
+
 
