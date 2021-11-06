@@ -49,4 +49,33 @@
 * read: standard read
 * login: compare username and hashed password to stored ones
 
+# Technical Description
+
+## User management
+
+### User creation
+* username is stored as is
+* password is hashed and stored
+
+### User login
+* inputed username is compared to stored username
+* if username is found then input password is hashed and compared to stored hashed
+
+### Subsequent Requests
+* for a request to be considered authorized, it needs the access token to be present and valid
+* an access token is validated by comparing it to the stored one
+
+## Session
+* player1 initiates session, session is frozen until player2 is present.
+* player2 browses available games (a game is available when player2 isnt present).
+* player2 joins session, session starts.
+* player1 makes a move, a move is a placement on the board, the board is then validated for a winning state.
+* when winning state is detected, the user who made the last placement within a session is declared as winner of the session.
+* Session is considered fulfilled when winner is present.
+* session entities are preserved and displayed as history
+
+## Terms
+* Winning state: when all pieces in the same x pos, or y pos, or in the diagonal share an attr. 
+* Diagonal positions: x = y or x + y = max x = max y.
+
 
