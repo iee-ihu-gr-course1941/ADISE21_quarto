@@ -4,7 +4,7 @@
 * id: Int - pk - Autoinc
 * player1-id: User
 * player2-id: User
-* player1-turn: Boolean
+* player1-turn: User 
 * winner: User
 
 ## Piece
@@ -31,23 +31,49 @@
 # Api spec
 
 ## Session
-* CRUD: standard crud operations
-* join: player2 joins game, game is now considered full and starts
-
-## Piece
-* Read: standard read
+* create: create session.
+* read: return all active and waiting sessions.
+* read-one: return info of session (used along with placements for the games state)
+* join: validate game isnt full, player2 joins game, game is now considered full and starts
+* remaining-pieces: returns remaing pieces by comparing the placements of the session to the absolute pieces
 
 ## Placement
-* create: create triggers multiple actions:
-** validate that there isnt another placement of the same session in the same pos-x pos-y
-** set-turn: when a placement has been made, the other player gets their turn
-** detect-win: after a placement, the board is validated for a winning state. If detected, 
-	the player who made the placement is declared winner is set in the session entity
+* create: create placement
+* read: get all placements of current session (used to determine game state along with session)
 
 ## User
 * create: standard creation (password is hashed)
 * read: standard read
-* login: compare username and hashed password to stored ones
+* login: compare username and hashed password to stored ones, returns access token valid for 2 hours
+
+# Service Spec
+
+## Session
+* create: create session.
+* read: return all active and waiting sessions.
+* read-one: return info of session (used along with placements for the games state)
+* join: validate game isnt full ,player2 joins game, game is now considered full and starts
+* validate-placement: validate that there isnt another placement of the same session in the same pos-x pos-y and that its the players turn to play
+* set-turn: set the turn of other player
+* detect-win: validate board for winning state
+* remaining-pieces: returns remaing pieces by comparing the placements of the session to the absolute pieces
+
+## Piece
+* read: standard read
+
+## Placement
+* read: get all placements of current session (used to determine game state along with session)
+* create: create triggers multiple actions:
+** validate that there isnt another placement of the same session in the same pos-x pos-y
+** detect-win: after a placement, the board is validated for a winning state. If detected, 
+	the player who made the placement is declared winner is set in the session entity
+** set-turn: when a placement has been made, the other player gets their turn
+
+## User
+* create: standard creation (password is hashed)
+* read: standard read
+* login: compare username and hashed password to stored ones, returns access token valid for 2 hours
+* validate-request: compare request access token with valid persisted token
 
 # Technical Description
 
@@ -63,7 +89,7 @@
 
 ### Subsequent Requests
 * for a request to be considered authorized, it needs the access token to be present and valid
-* an access token is validated by comparing it to the stored one
+* an access token is validated by comparing it to the stored one, username, id, timestamp isnt over 2 hours old.
 
 ## Session
 * player1 initiates session, session is frozen until player2 is present.
