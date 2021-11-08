@@ -4,8 +4,8 @@
 * id: Int - pk - Autoinc
 * player1-id: User
 * player2-id: User
-* player1-turn: User 
-* winner: User
+* turn: enum ('p1', 'p2') 
+* winner: enum ('p1', 'p2', 'none')
 
 ## Piece
 * id: Int - pk - Autoinc
