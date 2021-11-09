@@ -52,7 +52,7 @@
 * create: create session.
 * read: return all active and waiting sessions.
 * read-one: return info of session (used along with placements for the games state)
-* join: validate game isnt full ,player2 joins game, game is now considered full and starts
+* join: validate game isnt full , validate player isnt in another game, player2 joins game, game is now considered full and starts
 * validate-placement: validate that there isnt another placement of the same session in the same pos-x pos-y and that its the players turn to play
 * set-turn: set the turn of other player
 * detect-win: validate board for winning state
@@ -65,12 +65,13 @@
 * read: get all placements of current session (used to determine game state along with session)
 * create: create triggers multiple actions:
 ** validate that there isnt another placement of the same session in the same pos-x pos-y
+** validate player is part of game
 ** detect-win: after a placement, the board is validated for a winning state. If detected, 
 	the player who made the placement is declared winner is set in the session entity
 ** set-turn: when a placement has been made, the other player gets their turn
 
 ## User
-* create: standard creation (password is hashed)
+* sign-up: standard creation (password is hashed)
 * read: standard read
 * login: compare username and hashed password to stored ones, returns access token valid for 2 hours
 * validate-request: compare request access token with valid persisted token
