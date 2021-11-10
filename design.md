@@ -73,6 +73,7 @@
 ## User
 * sign-up: standard creation (password is hashed)
 * read: standard read
+* read-one: standard read one
 * login: compare username and hashed password to stored ones, returns access token valid for 2 hours
 * validate-request: compare request access token with valid persisted token
 
