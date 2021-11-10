@@ -44,7 +44,7 @@
 ## User
 * create: standard creation (password is hashed)
 * read: standard read
-* login: compare username and hashed password to stored ones, returns access token valid for 2 hours
+* login: authenticate and if exists set and return token 
 
 # Service Spec
 
@@ -72,9 +72,9 @@
 
 ## User
 * sign-up: standard creation (password is hashed)
-* read: standard read
 * read-one: standard read one
-* login: compare username and hashed password to stored ones, returns access token valid for 2 hours
+* authenticate: check username password
+* set-token: set-token of user
 * validate-request: compare request access token with valid persisted token
 
 # Technical Description
@@ -91,7 +91,7 @@
 
 ### Subsequent Requests
 * for a request to be considered authorized, it needs the access token to be present and valid
-* an access token is validated by comparing it to the stored one, username, id, timestamp isnt over 2 hours old.
+* an access token is validated by comparing it to the stored one, username, id. Token is invalidated after log out 
 
 ## Session
 * player1 initiates session, session is frozen until player2 is present.
