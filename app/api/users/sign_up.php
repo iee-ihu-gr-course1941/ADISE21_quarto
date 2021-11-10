@@ -18,15 +18,28 @@ $user = new User($db);
 
 $data = json_decode(file_get_contents('php://input'));
 
-$user->username = $data->username;
-$user->password = $data->password;
+if($data->username === "" || $data->username === null){
+	http_response_code(400);
+	echo json_encode(array('message' => 'Username cant be empty'));
+	die();
+}else{
+	$user->username = $data->username;
+}
+
+if($data->password === "" || $data->password === null){
+	http_response_code(400);
+	echo json_encode(array('message' => 'Password cant be empty'));
+	die();
+}else{
+	$user->password = $data->password;
+}
 
 if ($user->sign_up()) {
 	echo json_encode(
-		array('message' => 'User Created')
+		array('message' => 'User created')
 	);
 } else {
 	echo json_encode(
-		array('message' => 'User Not Created')
+		array('message' => 'Username already exists')
 	);
 }
