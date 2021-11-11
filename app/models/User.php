@@ -46,13 +46,7 @@ class User
 		$stmt->bindParam(':password_hash', 
 			password_hash($this->password, PASSWORD_DEFAULT));
 		
-		try{
-			$stmt->execute();
-			return true;
-		}catch(PDOException $e){
-			return false;
-		}
-
+		$stmt->execute();
 	}
 
 	public function set_token()
@@ -71,13 +65,7 @@ class User
 		$stmt->bindParam(':access_token', $this->access_token);
 		$stmt->bindParam(':id', $this->id);
 
-		try{
-			$stmt->execute();
-			return true; 
-		}catch(PDOException $e){
-			return false;
-		}
-
+		$stmt->execute();
 	}
 
 	public function authenticate()
