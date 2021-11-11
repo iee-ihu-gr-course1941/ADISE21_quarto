@@ -1,0 +1,16 @@
+INSERT INTO PIECES (id, attr1, attr2, attr3, attr4) VALUES (0, 0, 0, 0, 0);
+INSERT INTO PIECES (id, attr1, attr2, attr3, attr4) VALUES (1, 0, 0, 0, 1);
+INSERT INTO PIECES (id, attr1, attr2, attr3, attr4) VALUES (2, 0, 0, 1, 0);
+INSERT INTO PIECES (id, attr1, attr2, attr3, attr4) VALUES (3, 0, 0, 1, 1);
+INSERT INTO PIECES (id, attr1, attr2, attr3, attr4) VALUES (4, 0, 1, 0, 0);
+INSERT INTO PIECES (id, attr1, attr2, attr3, attr4) VALUES (5, 0, 1, 0, 1);
+INSERT INTO PIECES (id, attr1, attr2, attr3, attr4) VALUES (6, 0, 1, 1, 0);
+INSERT INTO PIECES (id, attr1, attr2, attr3, attr4) VALUES (7, 0, 1, 1, 1);
+INSERT INTO PIECES (id, attr1, attr2, attr3, attr4) VALUES (8, 1, 0, 0, 0);
+INSERT INTO PIECES (id, attr1, attr2, attr3, attr4) VALUES (9, 1, 0, 0, 1);
+INSERT INTO PIECES (id, attr1, attr2, attr3, attr4) VALUES (10, 1, 0, 1, 0);
+INSERT INTO PIECES (id, attr1, attr2, attr3, attr4) VALUES (11, 1, 0, 1, 1);
+INSERT INTO PIECES (id, attr1, attr2, attr3, attr4) VALUES (12, 1, 1, 0, 0);
+INSERT INTO PIECES (id, attr1, attr2, attr3, attr4) VALUES (13, 1, 1, 0, 1);
+INSERT INTO PIECES (id, attr1, attr2, attr3, attr4) VALUES (14, 1, 1, 1, 0);
+INSERT INTO PIECES (id, attr1, attr2, attr3, attr4) VALUES (15, 1, 1, 1, 1);
