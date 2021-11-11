@@ -8,7 +8,7 @@ include_once '../../config/Database.php';
 include_once '../../models/Piece.php';
 
 $database = new Database();
-$db = $database->connect();
+$db 	  = $database->connect();
 
 $piece = new Piece($db);
 

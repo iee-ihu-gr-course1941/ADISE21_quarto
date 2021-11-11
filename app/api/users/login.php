@@ -8,7 +8,7 @@ include_once '../../config/Database.php';
 include_once '../../models/User.php';
 
 $database = new Database();
-$db = $database->connect();
+$db 	  = $database->connect();
 
 $user = new User($db);
 
@@ -33,8 +33,9 @@ if ($data->password === "" || $data->password === null) {
 try {
     if ($user->authenticate()) {
         $user->set_token();
+
         echo json_encode(array(
-            'id' => $user->id,
+            'id' 	   => $user->id,
             'access_token' => $user->access_token));
     } else {
         echo json_encode(array('message' => 'Wrong Username or Password'));
