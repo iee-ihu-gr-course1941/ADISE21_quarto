@@ -111,4 +111,19 @@ class User
 
         return $this->access_token === $fetched_token;
     }
+
+    public function unset_token()
+    {
+        $query = 'UPDATE ' . $this->table . '
+				SET	access_token = NULL 
+				WHERE	id = :id';
+
+        $stmt = $this->conn->prepare($query);
+
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+        $stmt->bindParam(':id', $this->id);
+
+        $stmt->execute();
+    }
 }
