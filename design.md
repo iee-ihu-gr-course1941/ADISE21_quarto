@@ -8,7 +8,7 @@
 * winner: enum ('p1', 'p2', 'none')
 
 ## Piece
-* id: Int - pk - Autoinc
+* id: Int
 * attr1: Boolean
 * attr2: Boolean
 * attr3: Boolean
