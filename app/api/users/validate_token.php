@@ -29,10 +29,16 @@ if($data->id === "" || $data->id === null){
 	$user->id = $data->id;
 }
 
-if ($user->validate_token()) {
-	echo json_encode(array('message' => 'Valid Token'));
-} else {
-	http_response_code(401);
-	echo json_encode(array('message' => 'Invalid Token'));
+try{
+	if ($user->validate_token()) {
+		echo json_encode(array('message' => 'Valid Token'));
+	} else {
+		http_response_code(401);
+		echo json_encode(array('message' => 'Invalid Token'));
+		die();
+	}
+}catch(PDOException $e){
+	http_response_code(400);
+	echo json_encode(array('message' => 'Unable to validate token'));
 	die();
 }

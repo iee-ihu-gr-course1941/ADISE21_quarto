@@ -29,15 +29,19 @@ if($data->password === "" || $data->password === null){
 	$user->password = $data->password;
 }
 
-if ($user->authenticate()) {
-	if($user->set_token()){	
+try{
+	if ($user->authenticate()) {
+		$user->set_token();
 		echo json_encode(array(
 			'id' => $user->id,
 			'access_token' => $user->access_token));
-	}else{
-		echo json_encode(array('message' => 'Failed to Log In'));
+
+	} else {
+		echo json_encode(array('message' => 'Wrong Username or Password'));
 	}
 
-} else {
-	echo json_encode(array('message' => 'Wrong Username or Password'));
+}catch(PDOException $e){
+	http_response_code(400);
+	echo json_encode(array('message' => 'Unable to login'));
+	die();
 }
