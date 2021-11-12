@@ -21,23 +21,14 @@ $session = new Session($db);
 
 $data = json_decode(file_get_contents('php://input'));
 
-if ($data->id              === ""
-    || $data->id           === null
-    || $data->access_token === ""
-    || $data->access_token === null) {
-    http_response_code(400);
-    echo json_encode(array('message' => 'access token cant be empty'));
-    die();
-} else {
-    $user               = new User($db);
-    $user->id           = $data->id;
-    $user->access_token = $data->access_token;
+$user               = new User($db);
+$user->id           = $data->id;
+$user->access_token = $data->access_token;
 
-    if (!$user->validate_token()) {
-        http_response_code(401);
-        echo json_encode(array('message' => 'Invalid Token'));
-        die();
-    }
+if (!$user->validate_token()) {
+    http_response_code(401);
+    echo json_encode(array('message' => 'Invalid Token'));
+    die();
 }
 
 $session->player1_id = $data->id;

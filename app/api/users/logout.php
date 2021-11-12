@@ -22,12 +22,13 @@ if ($data->id === "" || $data->id === null) {
     $user->id = $data->id;
 }
 
-if ($data->access_token === "" || $data->access_token === null) {
-    http_response_code(400);
-    echo json_encode(array('message' => 'Access token cant be null'));
+$user->id           = $data->id;
+$user->access_token = $data->access_token;
+
+if (!$user->validate_token()) {
+    http_response_code(401);
+    echo json_encode(array('message' => 'Invalid Token'));
     die();
-} else {
-    $user->access_token = $data->access_token;
 }
 
 try {
