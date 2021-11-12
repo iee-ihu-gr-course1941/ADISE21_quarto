@@ -56,7 +56,7 @@
 * read-one: return info of session (used along with placements for the games state)
 * join: validate game isnt full, player2 joins game, game is now considered full and starts
 * set-turn: set the turn of other player
-* is-playing: validate that player isnt already in a session
+* is-playing: validate that player is a session
 * end-game: game ends
 
 * validate-placement: validate that there isnt another placement of the same session in the same pos-x pos-y and that its the players turn to play
@@ -71,7 +71,7 @@
 * create: create triggers multiple actions:
 ** validate that there isnt another placement of the same session in the same pos-x pos-y
 ** validate player is part of game
-** detect-win: after a placement, the board is validated for a winning state. If detected, 
+** detect-win: after a placement, the board is validated for a winning state or deadlock. If detected, 
 	the player who made the placement is declared winner is set in the session entity
 ** set-turn: when a placement has been made, the other player gets their turn
 
@@ -110,5 +110,6 @@
 ## Terms
 * Winning state: when all pieces in the same x pos, or y pos, or in the diagonal share an attr. 
 * Diagonal positions: x = y or x + y = max x = max y.
+* Deadlock: when there is no way a win can take place in following placements
 
 

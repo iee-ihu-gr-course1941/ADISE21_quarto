@@ -14,32 +14,14 @@ $user = new User($db);
 
 $data = json_decode(file_get_contents('php://input'));
 
-if ($data->access_token === "" || $data->access_token === null) {
-    http_response_code(400);
-    echo json_encode(array('message' => 'Access token cant be empty'));
-    die();
-} else {
-    $user->access_token = $data->access_token;
-}
+$user               = new User($db);
+$user->id           = $data->id;
+$user->access_token = $data->access_token;
 
-if ($data->id === "" || $data->id === null) {
-    http_response_code(400);
-    echo json_encode(array('message' => 'id cant be empty'));
-    die();
+if ($user->validate_token()) {
+    echo json_encode(array('message' => 'Token is valid'));
 } else {
-    $user->id = $data->id;
-}
-
-try {
-    if ($user->validate_token()) {
-        echo json_encode(array('message' => 'Valid Token'));
-    } else {
-        http_response_code(401);
-        echo json_encode(array('message' => 'Invalid Token'));
-        die();
-    }
-} catch (PDOException $e) {
-    http_response_code(400);
-    echo json_encode(array('message' => 'Unable to validate token'));
+    http_response_code(401);
+    echo json_encode(array('message' => 'Invalid Token'));
     die();
 }
