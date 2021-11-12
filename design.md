@@ -110,6 +110,6 @@
 ## Terms
 * Winning state: when all pieces in the same x pos, or y pos, or in the diagonal share an attr. 
 * Diagonal positions: x = y or x + y = max x = max y.
-* Deadlock: when there is no way a win can take place in following placements
+* Deadlock: When all placements of the same pos x or pos y or diagonal dont have at least one attribute in common
 
 
