@@ -31,14 +31,14 @@ if ($data->password === "" || $data->password === null) {
 }
 
 try {
-    if ($user->authenticate()) {
-        $user->set_token();
-
+    if ($user->authenticate() && $user->set_token()) {
         echo json_encode(array(
             'id' 	   => $user->id,
             'access_token' => $user->access_token));
     } else {
+        http_response_code(401);
         echo json_encode(array('message' => 'Wrong Username or Password'));
+        die();
     }
 } catch (PDOException $e) {
     http_response_code(400);

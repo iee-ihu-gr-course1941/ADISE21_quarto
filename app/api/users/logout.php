@@ -31,8 +31,13 @@ if ($data->access_token === "" || $data->access_token === null) {
 }
 
 try {
-    $user->unset_token();
-    echo json_encode(array('message' => 'Success'));
+    if ($user->unset_token()) {
+        echo json_encode(array('message' => 'Success'));
+    } else {
+        http_response_code(400);
+        echo json_encode(array('message' => 'Unable to logout'));
+        die();
+    }
 } catch (PDOException $e) {
     http_response_code(400);
     echo json_encode(array('message' => 'Unable to logout'));

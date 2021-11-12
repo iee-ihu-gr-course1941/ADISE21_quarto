@@ -9,8 +9,8 @@ CREATE TABLE SESSIONS(
   	id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	player1_id INT(6) UNSIGNED NOT NULL,
   	player2_id INT(6) UNSIGNED,
-  	turn ENUM('p1', 'p2') NOT NULL,
-  	winner ENUM('p1', 'p2', 'none') NOT NULL,
+  	turn ENUM('p1', 'p2') NOT NULL DEFAULT 'p1',
+  	winner ENUM('p1', 'p2'),
 	FOREIGN KEY (player1_id) REFERENCES USERS(id),
 	FOREIGN KEY (player2_id) REFERENCES USERS(id)
 );

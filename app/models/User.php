@@ -21,14 +21,19 @@ class User
 				WHERE u.id = ?';
 
         $stmt = $this->conn->prepare($query);
+
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
         $stmt->bindParam(1, $this->id);
 
-        $stmt->execute();
+        $result = $stmt->execute();
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $this->id 	= $row['id'];
         $this->username = $row['username'];
+
+        return $result;
     }
 
     public function sign_up()
@@ -49,7 +54,8 @@ class User
             password_hash($this->password, PASSWORD_DEFAULT)
         );
 
-        $stmt->execute();
+        $result = $stmt->execute();
+        return $result;
     }
 
     public function set_token()
@@ -68,7 +74,8 @@ class User
         $stmt->bindParam(':access_token', $this->access_token);
         $stmt->bindParam(':id', $this->id);
 
-        $stmt->execute();
+        $result = $stmt->execute();
+        return $result;
     }
 
     public function authenticate()
@@ -124,6 +131,7 @@ class User
 
         $stmt->bindParam(':id', $this->id);
 
-        $stmt->execute();
+        $result = $stmt->execute();
+        return $result;
     }
 }
