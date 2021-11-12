@@ -34,7 +34,8 @@
 * create: create session.
 * read: return all active and waiting sessions.
 * read-one: return info of session (used along with placements for the games state)
-* join: validate game isnt full, player2 joins game, game is now considered full and starts
+* join:validate players arent in other game, player2 joins game, game is now considered full and starts
+* end-game: game ends
 
 * remaining-pieces: returns remaing pieces by comparing the placements of the session to the absolute pieces
 
@@ -53,8 +54,10 @@
 * create: create session.
 * read: return all active and waiting sessions.
 * read-one: return info of session (used along with placements for the games state)
-* join: validate game isnt full , validate player isnt in another game, player2 joins game, game is now considered full and starts
+* join: validate game isnt full, player2 joins game, game is now considered full and starts
 * set-turn: set the turn of other player
+* is-playing: validate that player isnt already in a session
+* end-game: game ends
 
 * validate-placement: validate that there isnt another placement of the same session in the same pos-x pos-y and that its the players turn to play
 * detect-win: validate board for winning state
