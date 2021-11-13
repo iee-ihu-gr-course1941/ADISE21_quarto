@@ -106,15 +106,16 @@ class User
 
         $stmt = $this->conn->prepare($query);
 
-        if ($this->id              === ""
-          || $this->id           === null
-          || $this->token=== ""
-          || $this->token === null) {
+        if ($this->id     === ""
+          || $this->id    === null
+          || $this->access_token === ""
+          || $this->access_token === null) {
             return false;
         } else {
-            $this->access_token = htmlspecialchars(strip_tags($this->token));
+            $this->access_token = htmlspecialchars(strip_tags($this->access_token));
             $this->id 	        = htmlspecialchars(strip_tags($this->id));
         }
+
         $stmt->bindParam(':id', $this->id);
         $stmt->execute();
 

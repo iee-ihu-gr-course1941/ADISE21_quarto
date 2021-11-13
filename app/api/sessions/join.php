@@ -27,7 +27,7 @@ if (!$user->validate_token()) {
 
 if ($data->session_id === "" || $data->session_id === null) {
     http_response_code(400);
-    echo json_encode(array('message' => 'id cant be empty'));
+    echo json_encode(array('message' => 'Session id cant be empty'));
     die();
 } else {
     $session->id = $data->session_id;

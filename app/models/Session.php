@@ -10,6 +10,7 @@ class Session
     public $player2_id;
     public $turn;
     public $winner;
+    public $next_piece_id;
 
     public function __construct($db)
     {
@@ -19,14 +20,37 @@ class Session
     public static function is_playing($player_id, $session)
     {
         $query = 'SELECT count(id) as num FROM '. $session->table . '
-        WHERE player1_id = :player_id
-        OR    player2_id = :player_id';
+                            WHERE player1_id = :player_id
+                            OR    player2_id = :player_id';
 
         $stmt = $session->conn->prepare($query);
 
         $player_id = htmlspecialchars(strip_tags($player_id));
 
         $stmt->bindParam(':player_id', $player_id);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $num = $row['num'];
+
+        return $num > 0;
+    }
+
+    public function is_turn($player_id)
+    {
+        $query = 'SELECT count(id) as num FROM '. $this->table . '
+                          WHERE ((turn = \'p1\' AND player1_id = :player_id)
+                          OR    (turn = \'p2\'  AND player2_id = :player_id))
+                          AND   id = :id';
+
+        $stmt = $this->conn->prepare($query);
+
+        $player_id = htmlspecialchars(strip_tags($player_id));
+        $this->id  = htmlspecialchars(strip_tags($this->id));
+
+        $stmt->bindParam(':player_id', $player_id);
+        $stmt->bindParam(':id', $this->id);
         $stmt->execute();
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -93,9 +117,9 @@ class Session
     public function set_turn()
     {
         $query = 'UPDATE ' . $this->table . '
-                                SET TURN = CASE 
-                                                WHEN TURN = \'p1\' THEN \'p2\'
-                                                WHEN TURN = \'p2\' THEN \'p1\'
+                                SET turn = CASE 
+                                                WHEN turn = \'p1\' THEN \'p2\'
+                                                WHEN turn = \'p2\' THEN \'p1\'
                                            END
                                 WHERE id = ?';
 
@@ -145,5 +169,26 @@ class Session
 
         $result = $stmt->execute();
         return $result;
+    }
+
+    public function set_next()
+    {
+        $query = 'UPDATE ' . $this->table . '
+                                SET   next_piece    = :next_piece 
+                                WHERE id            = :id
+                                AND   next_piece    is NULL';
+
+        $stmt = $this->conn->prepare($query);
+
+        $this->id = htmlspecialchars(strip_tags($this->id));
+        $this->next_piece = htmlspecialchars(strip_tags($this->next_piece_id));
+
+        $stmt->bindParam(':id', $this->id);
+        $stmt->bindParam(':next_piece', $this->next_piece_id);
+
+        $result        = $stmt->execute();
+        $affected_rows = $stmt->rowCount();
+
+        return $result && $affected_rows > 0;
     }
 }
