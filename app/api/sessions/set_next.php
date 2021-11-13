@@ -43,10 +43,9 @@ if ($session->next_piece_id === null || $session->next_piece_id === "") {
 }
 
 try {
-    if (
-      Session::is_playing($data->id, $session)
+    if (Session::is_playing($data->id, $session)
       && $piece->is_available($data->session_id)
-      && $session->is_turn($data->id)
+      && !($session->is_turn($data->id))
       && $session->set_next()) {
         echo json_encode(array('message' => 'Next piece is set!'));
     } else {

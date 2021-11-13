@@ -23,12 +23,12 @@ class Piece
 
         $stmt->execute();
 
-        $posts_arr = array();
+        $pieces_array = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            array_push($posts_arr, $row);
+            array_push($pieces_array, $row);
         }
-        return $posts_arr;
+        return $pieces_array;
     }
 
     public function is_available($session_id)

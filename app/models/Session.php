@@ -87,11 +87,12 @@ class Session
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $this->id 	  = $row['id'];
-        $this->player1_id = $row['player1_id'];
-        $this->player2_id = $row['player2_id'];
-        $this->turn       = $row['turn'];
-        $this->winner     = $row['winner'];
+        $this->id 	     = $row['id'];
+        $this->player1_id    = $row['player1_id'];
+        $this->player2_id    = $row['player2_id'];
+        $this->turn          = $row['turn'];
+        $this->winner        = $row['winner'];
+        $this->next_piece_id = $row['next_piece'];
 
         return $result;
     }
@@ -190,5 +191,45 @@ class Session
         $affected_rows = $stmt->rowCount();
 
         return $result && $affected_rows > 0;
+    }
+
+    public function set_next_null()
+    {
+        $query = 'UPDATE ' . $this->table . '
+                                SET   next_piece = NULL 
+                                WHERE id         = :id';
+
+        $stmt = $this->conn->prepare($query);
+
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+        $stmt->bindParam(':id', $this->id);
+
+        $result        = $stmt->execute();
+        $affected_rows = $stmt->rowCount();
+
+        return $result && $affected_rows > 0;
+    }
+
+    public function is_next_null()
+    {
+        $query = 'SELECT count(*) as num FROM ' . $this->table . '
+                                WHERE id          = :id
+                                AND   next_piece is NULL';
+
+        $stmt = $this->conn->prepare($query);
+
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+        $stmt->bindParam(':id', $this->id);
+
+        $result        = $stmt->execute();
+        $affected_rows = $stmt->rowCount();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $num = $row['num'];
+
+        return $result && $num > 0;
     }
 }
