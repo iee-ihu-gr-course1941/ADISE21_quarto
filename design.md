@@ -6,6 +6,7 @@
 * player2-id: User
 * turn: enum ('p1', 'p2') 
 * winner: enum ('p1', 'p2', 'none')
+* next-piece: Piece
 
 ## Piece
 * id: Int

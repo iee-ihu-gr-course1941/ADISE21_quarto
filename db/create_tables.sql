@@ -11,8 +11,10 @@ CREATE TABLE SESSIONS(
   	player2_id INT(6) UNSIGNED,
   	turn ENUM('p1', 'p2') NOT NULL DEFAULT 'p1',
   	winner ENUM('p1', 'p2'),
+        next_piece INT(6) UNSIGNED,
 	FOREIGN KEY (player1_id) REFERENCES USERS(id),
-	FOREIGN KEY (player2_id) REFERENCES USERS(id)
+	FOREIGN KEY (player2_id) REFERENCES USERS(id),
+        FOREIGN KEY (next_piece) REFERENCES PIECES(id)
 );
 
 CREATE TABLE PIECES(
@@ -31,8 +33,7 @@ CREATE TABLE PLACEMENTS(
 	pos_x INT(1) UNSIGNED NOT NULL CHECK ((pos_x >= 0) and (pos_x <= 3)),
 	pos_y INT(1) UNSIGNED NOT NULL CHECK ((pos_y >= 0) and (pos_y <= 3)),
 	FOREIGN KEY (player_id) REFERENCES USERS(id),
-	FOREIGN KEY (session_id) REFERENCES SESSIONS(id),
-	FOREIGN KEY (piece_id) REFERENCES PIECES(id)
+	FOREIGN KEY (session_id) REFERENCES SESSIONS(id)
 );
 
 
