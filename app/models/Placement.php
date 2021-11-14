@@ -64,4 +64,26 @@ class Placement
         $affected_rows = $stmt->rowCount();
         return $affected_rows > 0;
     }
+
+    public function is_valid()
+    {
+        $query = 'SELECT * FROM ' . $this->table. '
+                          WHERE session_id = :session_id
+                          AND   pos_x      = :pos_x
+                          AND   pos_y      = :pos_y';
+
+        $stmt  = $this->conn->prepare($query);
+
+        $this->session_id = htmlspecialchars(strip_tags($this->session_id));
+        $this->pos_x      = htmlspecialchars(strip_tags($this->pos_x));
+        $this->pos_y      = htmlspecialchars(strip_tags($this->pos_y));
+
+        $stmt->bindParam(':session_id', $this->session_id);
+        $stmt->bindParam(':pos_x', $this->pos_x);
+        $stmt->bindParam(':pos_y', $this->pos_y);
+        $stmt->execute();
+
+        $affected_rows = $stmt->rowCount();
+        return !($affected_rows > 0);
+    }
 }

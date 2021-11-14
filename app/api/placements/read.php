@@ -26,8 +26,10 @@ if (!$user->validate_token()) {
 }
 
 try {
-    $placements = $placement->read();
-    echo json_encode(array('placements' => $placements));
+    $placement->session_id = $data->session_id;
+    if ($placements = $placement->read()) {
+        echo json_encode(array('placements' => $placements));
+    }
 } catch (PDOException $e) {
     http_response_code(400);
     echo json_encode(array('message' => 'Unable to read'));

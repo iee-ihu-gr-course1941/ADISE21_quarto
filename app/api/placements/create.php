@@ -44,8 +44,9 @@ $placement->pos_y      = $data->pos_y;
 try {
     if (Session::is_playing($user->id, $session)
       && $session->is_turn($user->id)
-      && $placement->create()
-      && !($session->is_next_null())) {
+      && !($session->is_next_null())
+      && $placement->is_valid()
+      && $placement->create()) {
         echo json_encode(array('message' => 'Placement created'));
         $session->set_next_null();
         $session->set_turn();

@@ -37,11 +37,12 @@ try {
         }
 
         $session = array(
-          'id'	       => $session->id,
-          'player1_id' => $session->player1_id,
-          'player2_id' => $session->player2_id,
-          'turn'       => $session->turn,
-          'winner'     => $session->winner,
+          'id'	          => $session->id,
+          'player1_id'    => $session->player1_id,
+          'player2_id'    => $session->player2_id,
+          'turn'          => $session->turn,
+          'winner'        => $session->winner,
+          'next_piece_id' => $session->next_piece_id,
         );
 
         echo json_encode($session);
