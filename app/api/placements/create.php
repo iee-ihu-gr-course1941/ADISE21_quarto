@@ -47,9 +47,12 @@ try {
       && !($session->is_next_null())
       && $placement->is_valid()
       && $placement->create()) {
-        echo json_encode(array('message' => 'Placement created'));
+        if ($session->has_won()) {
+            $session->set_winner($user->id);
+        }
         $session->set_next_null();
         $session->set_turn();
+        echo json_encode(array('message' => 'Placement created'));
     } else {
         http_response_code(400);
         echo json_encode(array('message' => 'Unable to create placement'));
