@@ -45,6 +45,7 @@ try {
     if (Session::is_playing($user->id, $session)
       && $session->is_turn($user->id)
       && !($session->is_next_null())
+      && $session->is_piece_available()
       && $placement->is_valid()
       && $placement->create()) {
         if ($session->has_won()) {

@@ -264,10 +264,10 @@ class Session
               AND (p2.pos_x + p2.pos_y = 3 AND p2.pos_y + 1 = p3.pos_y AND p2.pos_x - 1 = p3.pos_x)
               AND (p3.pos_x + p3.pos_y = 3 AND p3.pos_y + 1 = p4.pos_y AND p3.pos_x - 1 = p4.pos_x)
               AND (p4.pos_x + p4.pos_y = 3)))
-    	      AND ((pc1.attr1 = pc2.attr1 AND pc2.attr1 = pc3.attr1 AND pc3.attr1 = pc4.attr1) 
-                OR (pc1.attr2 = pc2.attr2 AND pc2.attr2 = pc3.attr2 AND pc3.attr2 = pc4.attr2)
-                OR (pc1.attr3 = pc2.attr3 AND pc2.attr3 = pc3.attr3 AND pc3.attr3 = pc4.attr3) 
-                OR (pc1.attr4 = pc2.attr4 AND pc2.attr4 = pc3.attr4 AND pc3.attr4 = pc4.attr4))';
+    	      AND ((pc1.attr1 = pc2.attr1 = pc3.attr1 = pc4.attr1) 
+                OR (pc1.attr2 = pc2.attr2 = pc3.attr2 = pc4.attr2)
+                OR (pc1.attr3 = pc2.attr3 = pc3.attr3 = pc4.attr3) 
+                OR (pc1.attr4 = pc2.attr4 = pc3.attr4 = pc4.attr4))';
 
         $stmt  = $this->conn->prepare($query);
 
@@ -298,5 +298,54 @@ class Session
 
         $stmt->execute();
         return $stmt;
+    }
+
+    public function remaining_pieces()
+    {
+        $query = 'SELECT * FROM PIECES as pc 
+                  WHERE pc.id NOT IN (
+	              SELECT pl.piece_id FROM PLACEMENTS as pl
+                      WHERE  pl.session_id = :session_id)';
+
+
+        $stmt = $this->conn->prepare($query);
+
+        $this->id  = htmlspecialchars(strip_tags($this->id));
+
+        $stmt->bindParam(':session_id', $this->id);
+
+        $stmt->execute();
+        $remaining_pieces_arr = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            array_push($remaining_pieces_arr, $row);
+        }
+        return $remaining_pieces_arr;
+    }
+
+    public function is_piece_available()
+    {
+        $query = 'SELECT count(*) as num 
+                  FROM PIECES as pc 
+                  WHERE pc.id = :piece_id
+                  AND   pc.id NOT IN (
+	            SELECT pl.piece_id FROM PLACEMENTS as pl
+                    WHERE  pl.session_id = :session_id )';
+
+
+        $stmt = $this->conn->prepare($query);
+
+        $this->id            = htmlspecialchars(strip_tags($this->id));
+        $this->next_piece_id = htmlspecialchars(strip_tags($this->next_piece_id));
+
+        $stmt->bindParam(':session_id', $this->id);
+        $stmt->bindParam(':piece_id', $this->next_piece_id);
+
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $num = $row['num'];
+
+        return $num > 0;
     }
 }

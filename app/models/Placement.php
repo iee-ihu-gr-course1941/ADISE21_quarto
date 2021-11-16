@@ -39,11 +39,11 @@ class Placement
     public function create()
     {
         $query = 'INSERT INTO ' . $this->table . '
-                    SET session_id = :session_id,
-                        player_id  = :player_id,
-                        piece_id   = :piece_id,
-                        pos_x      = :pos_x,
-                        pos_y      = :pos_y';
+                  SET session_id = :session_id,
+                      player_id  = :player_id,
+                      piece_id   = :piece_id,
+                      pos_x      = :pos_x,
+                      pos_y      = :pos_y';
 
         $stmt = $this->conn->prepare($query);
 
@@ -134,7 +134,9 @@ class Placement
         $stmt->bindParam(':pos_y', $this->pos_y);
         $stmt->execute();
 
-        $affected_rows = $stmt->rowCount();
-        return !($affected_rows > 0);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $num = $row['num'];
+
+        return $num > 0;
     }
 }
