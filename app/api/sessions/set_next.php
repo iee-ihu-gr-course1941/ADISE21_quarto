@@ -1,5 +1,6 @@
 <?php
 
+error_reporting(E_ALL ^ E_WARNING);
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 header('Access-Control-Allow-Methods: POST');
@@ -23,26 +24,26 @@ $user               = new User($db);
 $user->id           = $data->id;
 $user->access_token = $data->access_token;
 
-if (!$user->validate_token()) {
-    http_response_code(401);
-    echo json_encode(array('message' => 'Invalid Token'));
-    die();
-}
-
-$piece = new Piece($db);
-$piece->id = $data->next_piece_id;
-
-$session = new Session($db);
-$session->next_piece_id = $data->next_piece_id;
-$session->id            = $data->session_id;
-
-if ($session->next_piece_id === null || $session->next_piece_id === "") {
-    http_response_code(400);
-    echo json_encode(array('message' => 'Unable to set next piece'));
-    die();
-}
-
 try {
+    if (!$user->validate_token()) {
+        http_response_code(401);
+        echo json_encode(array('message' => 'Invalid Token'));
+        die();
+    }
+
+    $piece = new Piece($db);
+    $piece->id = $data->next_piece_id;
+
+    $session = new Session($db);
+    $session->next_piece_id = $data->next_piece_id;
+    $session->id            = $data->session_id;
+
+    if ($session->next_piece_id === null || $session->next_piece_id === "") {
+        http_response_code(400);
+        echo json_encode(array('message' => 'Unable to set next piece'));
+        die();
+    }
+
     if ($session->is_in_session($data->id, $session)
       && $piece->is_available($data->session_id)
       && !($session->is_turn($data->id))

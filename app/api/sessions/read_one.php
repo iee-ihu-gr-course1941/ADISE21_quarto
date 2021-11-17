@@ -1,6 +1,7 @@
 
 <?php
 
+error_reporting(E_ALL ^ E_WARNING);
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 header('Access-Control-Allow-Methods: GET');
@@ -19,16 +20,15 @@ $data = json_decode(file_get_contents('php://input'));
 $user               = new User($db);
 $user->id           = $data->id;
 $user->access_token = $data->access_token;
-
-if (!$user->validate_token()) {
-    http_response_code(401);
-    echo json_encode(array('message' => 'Invalid Token'));
-    die();
-}
-
-$session->id = isset($_GET['id']) ? $_GET['id'] : die();
-
 try {
+    if (!$user->validate_token()) {
+        http_response_code(401);
+        echo json_encode(array('message' => 'Invalid Token'));
+        die();
+    }
+
+    $session->id = isset($_GET['id']) ? $_GET['id'] : die();
+
     if ($session->read_one()) {
         if ($session->id === null) {
             http_response_code(404);
@@ -37,13 +37,13 @@ try {
         }
 
         $session = array(
-          'id'	          => $session->id,
-          'player1_id'    => $session->player1_id,
-          'player2_id'    => $session->player2_id,
-          'turn'          => $session->turn,
-          'winner'        => $session->winner,
-          'next_piece_id' => $session->next_piece_id,
-        );
+      'id'	          => $session->id,
+      'player1_id'    => $session->player1_id,
+      'player2_id'    => $session->player2_id,
+      'turn'          => $session->turn,
+      'winner'        => $session->winner,
+      'next_piece_id' => $session->next_piece_id,
+    );
 
         echo json_encode($session);
     } else {

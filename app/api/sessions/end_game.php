@@ -1,6 +1,7 @@
 
 <?php
 
+error_reporting(E_ALL ^ E_WARNING);
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 header('Access-Control-Allow-Methods: DELETE');
@@ -23,24 +24,24 @@ $user               = new User($db);
 $user->id           = $data->id;
 $user->access_token = $data->access_token;
 
-if (!$user->validate_token()) {
-    http_response_code(401);
-    echo json_encode(array('message' => 'Invalid Token'));
-    die();
-}
-
-$session     = new Session($db);
-$session->id = $data->session_id;
-
-if ($session->id === "" || $session->id === null) {
-    http_response_code(400);
-    echo json_encode(array('message' => 'id cant be empty'));
-    die();
-}
-
-
-
 try {
+    if (!$user->validate_token()) {
+        http_response_code(401);
+        echo json_encode(array('message' => 'Invalid Token'));
+        die();
+    }
+
+    $session     = new Session($db);
+    $session->id = $data->session_id;
+
+    if ($session->id === "" || $session->id === null) {
+        http_response_code(400);
+        echo json_encode(array('message' => 'id cant be empty'));
+        die();
+    }
+
+
+
     if ($session->is_in_session($data->id) && $session->end_game()) {
         echo json_encode(array('message' => 'Game ended'));
     } else {

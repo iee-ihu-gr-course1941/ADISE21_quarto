@@ -1,6 +1,7 @@
 
 <?php
 
+error_reporting(E_ALL ^ E_WARNING);
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 header('Access-Control-Allow-Methods: POST');
@@ -25,15 +26,15 @@ $user               = new User($db);
 $user->id           = $data->id;
 $user->access_token = $data->access_token;
 
-if (!$user->validate_token()) {
-    http_response_code(401);
-    echo json_encode(array('message' => 'Invalid Token'));
-    die();
-}
-
-$session->player1_id = $data->id;
-
 try {
+    if (!$user->validate_token()) {
+        http_response_code(401);
+        echo json_encode(array('message' => 'Invalid Token'));
+        die();
+    }
+
+    $session->player1_id = $data->id;
+
     if (!($session->is_playing($data->id)) && $session->create()) {
         echo json_encode(array('message' => 'Session created'));
     } else {
