@@ -53,10 +53,14 @@ try {
             $session->set_winner($session->turn);
             $session->end_game();
             echo json_encode(array('message'=>$session->winner ." has won!!"));
+        } elseif ($session->is_draw()) {
+            $session->end_game();
+            echo json_encode(array('message'=>"Draw!"));
+        } else {
+            $session->set_next_null();
+            $session->set_turn();
+            echo json_encode(array('message' => 'Placement created'));
         }
-        $session->set_next_null();
-        $session->set_turn();
-        echo json_encode(array('message' => 'Placement created'));
     } else {
         http_response_code(400);
         echo json_encode(array('message' => 'Unable to create placement'));
