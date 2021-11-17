@@ -259,14 +259,21 @@ class Session
     public function has_won()
     {
         $query = '
-SELECT count(*) as num FROM PLACEMENTS as p1 JOIN PLACEMENTS as p2 JOIN PLACEMENTS as p3 JOIN PLACEMENTS as p4 
-INNER JOIN PIECES as pc1 on pc1.id = p1.piece_id INNER JOIN PIECES as pc2 on pc2.id = p2.piece_id INNER JOIN PIECES as pc3 on pc3.id = p3.piece_id INNER JOIN PIECES as pc4 on pc4.id = p4.piece_id
+        SELECT count(*) as num FROM PLACEMENTS as p1 JOIN PLACEMENTS as p2 JOIN PLACEMENTS as p3 JOIN PLACEMENTS as p4 
+        INNER JOIN PIECES as pc1 on pc1.id = p1.piece_id 
+        INNER JOIN PIECES as pc2 on pc2.id = p2.piece_id 
+        INNER JOIN PIECES as pc3 on pc3.id = p3.piece_id 
+        INNER JOIN PIECES as pc4 on pc4.id = p4.piece_id
 	WHERE  (p1.piece_id <> p2.piece_id 
     	AND p2.piece_id <> p3.piece_id 
     	AND p3.piece_id <> p4.piece_id
     	AND p1.piece_id <> p3.piece_id
     	AND p2.piece_id <> p4.piece_id
-    	AND p1.piece_id <> p4.piece_id)
+        AND p1.piece_id <> p4.piece_id)
+        AND p1.session_id = :session_id
+        AND p2.session_id = :session_id
+        AND p3.session_id = :session_id
+        AND p4.session_id = :session_id
 	AND ((p1.pos_x = p2.pos_x AND p2.pos_x = p3.pos_x AND p3.pos_x = p4.pos_x) 
          OR (p1.pos_y = p2.pos_y AND p2.pos_y = p3.pos_y AND p3.pos_y = p4.pos_y)
          OR ((p1.pos_x = p1.pos_y AND p1.pos_y + 1 = p2.pos_y)
@@ -281,6 +288,10 @@ INNER JOIN PIECES as pc1 on pc1.id = p1.piece_id INNER JOIN PIECES as pc2 on pc2
          OR (pc1.attr3 = pc2.attr3 AND pc2.attr3 = pc3.attr3 AND pc3.attr3 = pc4.attr3) OR (pc1.attr4 = pc2.attr4 AND pc2.attr4 = pc3.attr4 AND pc3.attr4 = pc4.attr4))
 ';
         $stmt  = $this->conn->prepare($query);
+
+        $this->id  = htmlspecialchars(strip_tags($this->id));
+
+        $stmt->bindParam(':session_id', $this->id);
 
         $stmt->execute();
 
