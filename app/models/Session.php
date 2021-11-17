@@ -20,14 +20,17 @@ class Session
     public static function is_playing($player_id, $session)
     {
         $query = 'SELECT count(id) as num FROM '. $session->table . '
-                            WHERE player1_id = :player_id
-                            OR    player2_id = :player_id';
+                            WHERE (player1_id = :player_id
+                              OR    player2_id = :player_id)
+                            AND id = :session_id';
 
         $stmt = $session->conn->prepare($query);
 
         $player_id = htmlspecialchars(strip_tags($player_id));
+        $session_id = htmlspecialchars(strip_tags($session->id));
 
         $stmt->bindParam(':player_id', $player_id);
+        $stmt->bindParam(':session_id', $session_id);
         $stmt->execute();
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);

@@ -17,8 +17,6 @@ include_once '../../models/User.php';
 $database = new Database();
 $db 	  = $database->connect();
 
-$session = new Session($db);
-
 $data = json_decode(file_get_contents('php://input'));
 
 $user               = new User($db);
@@ -31,7 +29,8 @@ if (!$user->validate_token()) {
     die();
 }
 
-$session->id = isset($_GET['id']) ? $_GET['id'] : die();
+$session     = new Session($db);
+$session->id = $data->session_id;
 
 if ($session->id === "" || $session->id === null) {
     http_response_code(400);
@@ -39,16 +38,18 @@ if ($session->id === "" || $session->id === null) {
     die();
 }
 
+
+
 try {
     if (Session::is_playing($data->id, $session) && $session->end_game()) {
         echo json_encode(array('message' => 'Game ended'));
     } else {
-        http_response_code(401);
+        http_response_code(400);
         echo json_encode(array('message' => 'Unable to end game'));
         die();
     }
 } catch (PDOException $e) {
     http_response_code(400);
-    echo json_encode(array('message' => 'Unable to end game'));
+    echo json_encode(array('message' => 'Unable to end game: '.$e));
     die();
 }

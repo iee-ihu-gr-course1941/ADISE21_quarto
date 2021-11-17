@@ -33,7 +33,8 @@ CREATE TABLE PLACEMENTS(
 	pos_x INT(1) UNSIGNED NOT NULL CHECK ((pos_x >= 0) and (pos_x <= 3)),
 	pos_y INT(1) UNSIGNED NOT NULL CHECK ((pos_y >= 0) and (pos_y <= 3)),
 	FOREIGN KEY (player_id) REFERENCES USERS(id),
-	FOREIGN KEY (session_id) REFERENCES SESSIONS(id)
+	FOREIGN KEY (session_id) REFERENCES SESSIONS(id) 
+          ON DELETE CASCADE
 );
 
 
