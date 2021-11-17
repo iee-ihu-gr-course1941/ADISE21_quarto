@@ -43,7 +43,7 @@ if ($session->next_piece_id === null || $session->next_piece_id === "") {
 }
 
 try {
-    if (Session::is_playing($data->id, $session)
+    if ($session->is_in_session($data->id, $session)
       && $piece->is_available($data->session_id)
       && !($session->is_turn($data->id))
       && $session->set_next()) {

@@ -41,7 +41,7 @@ if ($session->id === "" || $session->id === null) {
 
 
 try {
-    if (Session::is_playing($data->id, $session) && $session->end_game()) {
+    if ($session->is_in_session($data->id) && $session->end_game()) {
         echo json_encode(array('message' => 'Game ended'));
     } else {
         http_response_code(400);

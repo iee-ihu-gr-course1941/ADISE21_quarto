@@ -36,7 +36,7 @@ if ($data->session_id === "" || $data->session_id === null) {
 $session->player2_id = $data->id;
 
 try {
-    if (!(Session::is_playing($session->player2_id, $session)) && $session->join()) {
+    if (!($session->is_playing($session->player2_id)) && $session->join()) {
         echo json_encode(array('message' => 'Player 2 joined successfully'));
     } else {
         http_response_code(403);

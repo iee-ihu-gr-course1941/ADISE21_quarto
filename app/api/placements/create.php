@@ -42,14 +42,16 @@ $placement->pos_x      = $data->pos_x;
 $placement->pos_y      = $data->pos_y;
 
 try {
-    if (Session::is_playing($user->id, $session)
+    if ($session->is_in_session($user->id)
       && $session->is_turn($user->id)
       && !($session->is_next_null())
       && $session->is_piece_available()
       && $placement->is_valid()
       && $placement->create()) {
         if ($session->has_won()) {
-            $session->set_winner($user->id);
+            $session->set_winner($session->turn);
+            $session->end_game();
+            echo json_encode(array('message'=>$session->winner ." has won!!"));
         }
         $session->set_next_null();
         $session->set_turn();

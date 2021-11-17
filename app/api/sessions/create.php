@@ -34,7 +34,7 @@ if (!$user->validate_token()) {
 $session->player1_id = $data->id;
 
 try {
-    if (!(Session::is_playing($data->id, $session)) && $session->create()) {
+    if (!($session->is_playing($data->id)) && $session->create()) {
         echo json_encode(array('message' => 'Session created'));
     } else {
         http_response_code(400);
