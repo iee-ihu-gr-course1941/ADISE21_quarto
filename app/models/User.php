@@ -48,11 +48,10 @@ class User
         $this->username = htmlspecialchars(strip_tags($this->username));
         $this->password = htmlspecialchars(strip_tags($this->password));
 
+        $pwd = password_hash($this->password, PASSWORD_DEFAULT);
+
         $stmt->bindParam(':username', $this->username);
-        $stmt->bindParam(
-            ':password_hash',
-            password_hash($this->password, PASSWORD_DEFAULT)
-        );
+        $stmt->bindParam(':password_hash', $pwd);
 
         $result = $stmt->execute();
         return $result;

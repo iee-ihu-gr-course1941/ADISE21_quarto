@@ -3,7 +3,7 @@
 error_reporting(E_ALL ^ E_WARNING);
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
-header('Access-Control-Allow-Methods: GET');
+header('Access-Control-Allow-Methods: PUT');
 
 include_once '../../config/Database.php';
 include_once '../../models/Session.php';
@@ -26,15 +26,15 @@ if (!$user->validate_token()) {
     die();
 }
 
-if ($data->session_id === "" || $data->session_id === null) {
-    http_response_code(400);
-    echo json_encode(array('message' => 'Session id cant be empty'));
-    die();
+if (isset($_GET['id'])) {
+    $session->id = $_GET['id'];
 } else {
-    $session->id = $data->session_id;
+    http_response_code(400);
+    echo json_encode(array('message' => 'Session id not provided'));
+    die();
 }
 
-$session->player2_id = $data->id;
+$session->player2_id = $user->id;
 
 try {
     if (!($session->is_playing($session->player2_id)) && $session->join()) {

@@ -28,7 +28,7 @@ try {
     }
 
     $sessions = $session->read();
-    echo json_encode(array('sessions'=>$sessions));
+    echo json_encode($sessions);
 } catch (PDOException $e) {
     http_response_code(400);
     echo json_encode(array('message' => 'Unable to read'));

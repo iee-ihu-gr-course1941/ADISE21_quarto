@@ -24,33 +24,27 @@ $user               = new User($db);
 $user->id           = $data->id;
 $user->access_token = $data->access_token;
 
-try {
-    if (!$user->validate_token()) {
-        http_response_code(401);
-        echo json_encode(array('message' => 'Invalid Token'));
-        die();
-    }
+if (!$user->validate_token()) {
+    http_response_code(401);
+    echo json_encode(array('message' => 'Invalid Token'));
+    die();
+}
 
-    $session     = new Session($db);
-    $session->id = $data->session_id;
+$session = new Session($db);
 
-    if ($session->id === "" || $session->id === null) {
-        http_response_code(400);
-        echo json_encode(array('message' => 'id cant be empty'));
-        die();
-    }
-
-
-
-    if ($session->is_in_session($data->id) && $session->end_game()) {
-        echo json_encode(array('message' => 'Game ended'));
-    } else {
-        http_response_code(400);
-        echo json_encode(array('message' => 'Unable to end game'));
-        die();
-    }
-} catch (PDOException $e) {
+if (isset($_GET['id'])) {
+    $session->id = $_GET['id'];
+} else {
     http_response_code(400);
-    echo json_encode(array('message' => 'Unable to end game: '.$e));
+    echo json_encode(array('message' => 'Id not provided'));
+    die();
+}
+
+
+if ($session->is_in_session($data->id) && $session->end_game()) {
+    echo json_encode(array('message' => 'Game ended'));
+} else {
+    http_response_code(403);
+    echo json_encode(array('message' => 'Unable to end game'));
     die();
 }

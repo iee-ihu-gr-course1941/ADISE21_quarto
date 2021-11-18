@@ -26,24 +26,18 @@ $user               = new User($db);
 $user->id           = $data->id;
 $user->access_token = $data->access_token;
 
-try {
-    if (!$user->validate_token()) {
-        http_response_code(401);
-        echo json_encode(array('message' => 'Invalid Token'));
-        die();
-    }
+if (!$user->validate_token()) {
+    http_response_code(401);
+    echo json_encode(array('message' => 'Invalid Token'));
+    die();
+}
 
-    $session->player1_id = $data->id;
+$session->player1_id = $data->id;
 
-    if (!($session->is_playing($data->id)) && $session->create()) {
-        echo json_encode(array('message' => 'Session created'));
-    } else {
-        http_response_code(400);
-        echo json_encode(array('message' => 'Unable to create session'));
-        die();
-    }
-} catch (PDOException $e) {
-    http_response_code(400);
-    echo json_encode(array('message' => 'Unable to create session:'));
+if (!($session->is_playing($data->id)) && $session->create()) {
+    echo json_encode(array('message' => 'Session created'));
+} else {
+    http_response_code(403);
+    echo json_encode(array('message' => 'Unable to create session'));
     die();
 }

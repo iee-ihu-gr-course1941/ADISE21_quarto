@@ -28,46 +28,47 @@ $user               = new User($db);
 $user->id           = $data->id;
 $user->access_token = $data->access_token;
 
-try {
-    if (!$user->validate_token()) {
-        http_response_code(401);
-        echo json_encode(array('message' => 'Invalid Token'));
-        die();
-    }
-    $session->id           = $data->session_id;
-    $session->read_one();
+if (!$user->validate_token()) {
+    http_response_code(401);
+    echo json_encode(array('message' => 'Invalid Token'));
+    die();
+}
 
-    $placement->session_id = $data->session_id;
-    $placement->piece_id   = intval($session->next_piece_id);
-    $placement->player_id  = intval($user->id);
-    $placement->pos_x      = $data->pos_x;
-    $placement->pos_y      = $data->pos_y;
-
-    if ($session->is_in_session($user->id)
-      && $session->is_turn($user->id)
-      && !($session->is_next_null())
-      && $session->is_piece_available()
-      && $placement->is_valid()
-      && $placement->create()) {
-        if ($session->has_won()) {
-            $session->set_winner($session->turn);
-            $session->end_game();
-            echo json_encode(array('message'=>$session->winner ." has won!!"));
-        } elseif ($session->is_draw()) {
-            $session->end_game();
-            echo json_encode(array('message'=>"Draw!"));
-        } else {
-            $session->set_next_null();
-            $session->set_turn();
-            echo json_encode(array('message' => 'Placement created'));
-        }
-    } else {
-        http_response_code(400);
-        echo json_encode(array('message' => 'Unable to create placement'));
-        die();
-    }
-} catch (PDOException $e) {
+if (isset($_GET['session_id'])) {
+    $session->id = $_GET['session_id'];
+} else {
     http_response_code(400);
-    echo json_encode(array('message' => "Unable to create placement: $e"));
+    echo json_encode(array('message' => 'Session id not provided'));
+    die();
+}
+
+$session->read_one();
+
+$placement->session_id = $session->id;
+$placement->piece_id   = intval($session->next_piece_id);
+$placement->player_id  = intval($user->id);
+$placement->pos_x      = $data->pos_x;
+$placement->pos_y      = $data->pos_y;
+
+if ($session->is_in_session($user->id)
+  && $session->is_turn($user->id)
+  && !($session->is_next_null())
+  && $placement->is_valid()
+  && $placement->create()) {
+    if ($session->has_won()) {
+        $session->set_winner($session->turn);
+        $session->end_game();
+        echo json_encode(array('message'=> ''. $session->turn ." has won!!"));
+    } elseif ($session->is_draw()) {
+        $session->end_game();
+        echo json_encode(array('message'=>"Draw!"));
+    } else {
+        $session->set_next_null();
+        $session->set_turn();
+        echo json_encode(array('message' => 'Placement created'));
+    }
+} else {
+    http_response_code(403);
+    echo json_encode(array('message' => 'Unable to create placement'));
     die();
 }

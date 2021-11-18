@@ -19,23 +19,25 @@ $data = json_decode(file_get_contents('php://input'));
 $user               = new User($db);
 $user->id           = $data->id;
 $user->access_token = $data->access_token;
-try {
-    if (!$user->validate_token()) {
-        http_response_code(401);
-        echo json_encode(array('message' => 'Invalid Token'));
-        die();
-    }
+if (!$user->validate_token()) {
+    http_response_code(401);
+    echo json_encode(array('message' => 'Invalid Token'));
+    die();
+}
 
-    $placement->session_id = $data->session_id;
-    if ($placements = $placement->read()) {
-        echo json_encode(array('placements' => $placements));
-    } else {
-        http_response_code(400);
-        echo json_encode(array('message' => 'Unable to read'));
-        die();
-    }
-} catch (PDOException $e) {
+
+if (isset($_GET['session_id'])) {
+    $placement->session_id = $_GET['session_id'];
+} else {
     http_response_code(400);
+    echo json_encode(array('message' => 'Session id not provided'));
+    die();
+}
+
+if ($placements = $placement->read()) {
+    echo json_encode($placements);
+} else {
+    http_response_code(403);
     echo json_encode(array('message' => 'Unable to read'));
     die();
 }
