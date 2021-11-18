@@ -25,7 +25,7 @@ A simple implementation of the quarto board game written in the standard php/mys
     * id
     * access_token
 
-* DELETE /api/sessions/read.php
+* DELETE /api/sessions/end_game.php
   * Query Params: id
   * body:
     * id
