@@ -377,7 +377,6 @@ class Session
 	              SELECT pl.piece_id FROM PLACEMENTS as pl
                       WHERE  pl.session_id = :session_id)';
 
-
         $stmt = $this->conn->prepare($query);
 
         $this->id  = htmlspecialchars(strip_tags($this->id));
