@@ -1,10 +1,7 @@
 
 <?php
 
-error_reporting(E_ALL ^ E_WARNING);
-header('Access-Control-Allow-Origin: *');
-header('Content-Type: application/json');
-header('Access-Control-Allow-Methods: GET');
+error_reporting(E_ERROR);
 
 include_once '../../config/Database.php';
 include_once '../../models/Session.php';

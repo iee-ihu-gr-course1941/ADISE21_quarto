@@ -1,9 +1,6 @@
 <?php
 
-error_reporting(E_ALL ^ E_WARNING);
-header('Access-Control-Allow-Origin: *');
-header('Content-Type: application/json');
-header('Access-Control-Allow-Methods: GET');
+error_reporting(E_ERROR);
 
 include_once '../../config/Database.php';
 include_once '../../models/Session.php';
@@ -19,6 +16,8 @@ $data = json_decode(file_get_contents('php://input'));
 $user               = new User($db);
 $user->id           = $data->id;
 $user->access_token = $data->access_token;
+
+echo json_encode($data);
 
 try {
     if (!$user->validate_token()) {

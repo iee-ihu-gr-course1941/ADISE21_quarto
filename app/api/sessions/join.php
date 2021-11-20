@@ -1,9 +1,6 @@
 <?php
 
-error_reporting(E_ALL ^ E_WARNING);
-header('Access-Control-Allow-Origin: *');
-header('Content-Type: application/json');
-header('Access-Control-Allow-Methods: PUT');
+error_reporting(E_ERROR);
 
 include_once '../../config/Database.php';
 include_once '../../models/Session.php';
@@ -12,11 +9,11 @@ include_once '../../models/User.php';
 $database = new Database();
 $db 	  = $database->connect();
 
+$user = new User($db);;
 $session = new Session($db);
 
 $data = json_decode(file_get_contents('php://input'));
 
-$user               = new User($db);
 $user->id           = $data->id;
 $user->access_token = $data->access_token;
 
