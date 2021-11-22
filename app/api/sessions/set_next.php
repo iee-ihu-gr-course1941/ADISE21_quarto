@@ -1,6 +1,6 @@
 <?php
 
-error_reporting(E_ALL ^ E_WARNING);
+error_reporting(E_ERROR);
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 header('Access-Control-Allow-Methods: PUT');
