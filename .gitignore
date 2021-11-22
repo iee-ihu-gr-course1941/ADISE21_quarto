@@ -1,3 +1,4 @@
 .devcontainer
 *.cache
 tags
+Config.php
