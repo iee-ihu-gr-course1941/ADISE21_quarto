@@ -2,7 +2,7 @@
 
 class Database
 {
-    private $host = 'localhost';
+    private $sock = '/home/student/it/2018/it185291/mysql/run/mysql.sock';
     private $db_name = 'quarto';
     private $username = 'quarto';
     private $password = '123123';
@@ -13,7 +13,7 @@ class Database
         $this->conn = null;
         try {
             $this->conn = new PDO(
-                'mysql:host=' . $this->host .';'.
+                'mysql:unix_socket=' . $this->sock.';'.
                 'dbname=' . $this->db_name,
                 $this->username,
                 $this->password
