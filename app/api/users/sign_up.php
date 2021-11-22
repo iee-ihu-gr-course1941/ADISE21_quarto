@@ -36,17 +36,11 @@ if ($data->password === "" || $data->password === null) {
     $user->password = $data->password;
 }
 
-try {
-    if ($user->sign_up()) {
-        echo json_encode(
-            array('message' => 'User created')
-        );
-    } else {
-        http_response_code(400);
-        echo json_encode(array('message' => 'Unable to sign up'));
-        die();
-    }
-} catch (PDOException $e) {
+if ($user->sign_up()) {
+    echo json_encode(
+        array('message' => 'User created')
+    );
+} else {
     http_response_code(400);
     echo json_encode(array('message' => 'Unable to sign up'));
     die();

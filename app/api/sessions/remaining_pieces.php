@@ -28,9 +28,16 @@ $session = new Session($db);
 if (isset($_GET['id'])) {
     $session->id = $_GET['id'];
 } else {
-    http_response_code(400);
+    http_response_code(403);
     echo json_encode(array('message' => 'Session id not provided'));
     die();
 }
 $remaining_pieces = $session->remaining_pieces();
-echo json_encode($remaining_pieces);
+
+if (count($remaining_pieces)>0) {
+    echo json_encode($remaining_pieces);
+} else {
+    http_response_code(403);
+    echo json_encode(array('message' => 'Unable to read remaining pieces'));
+    die();
+}

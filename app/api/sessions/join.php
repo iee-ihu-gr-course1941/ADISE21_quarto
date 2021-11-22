@@ -36,16 +36,10 @@ if (isset($_GET['id'])) {
 
 $session->player2_id = $user->id;
 
-try {
-    if (!($session->is_playing($session->player2_id)) && $session->join()) {
-        echo json_encode(array('message' => 'Player 2 joined successfully'));
-    } else {
-        http_response_code(403);
-        echo json_encode(array('message' => 'Unable to join game'));
-        die();
-    }
-} catch (PDOException $e) {
-    http_response_code(400);
+if (!($session->is_playing($session->player2_id)) && $session->join()) {
+    echo json_encode(array('message' => 'Player 2 joined successfully'));
+} else {
+    http_response_code(403);
     echo json_encode(array('message' => 'Unable to join game'));
     die();
 }

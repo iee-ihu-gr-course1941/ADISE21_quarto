@@ -20,16 +20,17 @@ $user               = new User($db);
 $user->id           = $data->id;
 $user->access_token = $data->access_token;
 
-try {
-    if (!$user->validate_token()) {
-        http_response_code(401);
-        echo json_encode(array('message' => 'Invalid Token'));
-        die();
-    }
+if (!$user->validate_token()) {
+    http_response_code(401);
+    echo json_encode(array('message' => 'Invalid Token'));
+    die();
+}
 
-    $sessions = $session->read();
+$sessions = $session->read();
+
+if (count($sessions) > 0) {
     echo json_encode($sessions);
-} catch (PDOException $e) {
+} else {
     http_response_code(400);
     echo json_encode(array('message' => 'Unable to read'));
     die();

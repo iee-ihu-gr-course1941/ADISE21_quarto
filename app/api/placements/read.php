@@ -34,10 +34,12 @@ if (isset($_GET['session_id'])) {
     die();
 }
 
-if ($placements = $placement->read()) {
+$placements= $placement->read();
+
+if (count($placements) > 0) {
     echo json_encode($placements);
 } else {
-    http_response_code(403);
+    http_response_code(400);
     echo json_encode(array('message' => 'Unable to read'));
     die();
 }

@@ -26,21 +26,15 @@ if ($data->id === "" || $data->id === null) {
 $user->id           = $data->id;
 $user->access_token = $data->access_token;
 
-try {
-    if (!$user->validate_token()) {
-        http_response_code(401);
-        echo json_encode(array('message' => 'Invalid Token'));
-        die();
-    }
+if (!$user->validate_token()) {
+    http_response_code(401);
+    echo json_encode(array('message' => 'Invalid Token'));
+    die();
+}
 
-    if ($user->unset_token()) {
-        echo json_encode(array('message' => 'Success'));
-    } else {
-        http_response_code(400);
-        echo json_encode(array('message' => 'Unable to logout'));
-        die();
-    }
-} catch (PDOException $e) {
+if ($user->unset_token()) {
+    echo json_encode(array('message' => 'Success'));
+} else {
     http_response_code(400);
     echo json_encode(array('message' => 'Unable to logout'));
     die();
