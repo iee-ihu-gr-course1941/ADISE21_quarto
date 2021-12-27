@@ -16,6 +16,14 @@ include_once '../../models/Placement.php';
 include_once '../../models/User.php';
 include_once '../../models/Session.php';
 
+
+$method = $_SERVER['REQUEST_METHOD'];
+if (!($method=='POST')) {
+    http_response_code(405);
+    die();
+}
+
+
 $database = new Database();
 $db 	  = $database->connect();
 

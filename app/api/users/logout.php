@@ -8,6 +8,12 @@ header('Access-Control-Allow-Methods: PUT');
 include_once '../../config/Database.php';
 include_once '../../models/User.php';
 
+$method = $_SERVER['REQUEST_METHOD'];
+if (!($method=='PUT')) {
+    http_response_code(405);
+    die();
+}
+
 $database = new Database();
 $db 	  = $database->connect();
 

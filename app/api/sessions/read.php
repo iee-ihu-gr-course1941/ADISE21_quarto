@@ -9,6 +9,12 @@ include_once '../../config/Database.php';
 include_once '../../models/Session.php';
 include_once '../../models/User.php';
 
+$method = $_SERVER['REQUEST_METHOD'];
+if (!($method=='GET')) {
+    http_response_code(405);
+    die();
+}
+
 $database = new Database();
 $db 	  = $database->connect();
 

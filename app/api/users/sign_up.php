@@ -13,6 +13,12 @@ header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,
 include_once '../../config/Database.php';
 include_once '../../models/User.php';
 
+$method = $_SERVER['REQUEST_METHOD'];
+if (!($method=='POST')) {
+    http_response_code(405);
+    die();
+}
+
 $database = new Database();
 $db 	  = $database->connect();
 
