@@ -21,15 +21,8 @@ case $1 in
           echo 'one or more variables are undefined'
           exit 1
         fi
-
-        curl -f -s -d "{\"id\":\"$id\",\"access_token\":\"$access_token\"}" \
-                -H "Content-Type: application/json" \
-                -X GET https://users.it.teithe.gr/\~it185291/api/sessions/read.php \
-                | sed 's/"//g' | sed 's/,/ | /g' | sed 's/[{}:]/ /g'
-
-        ./scripts/print-board.mjs $(curl -s -f -d "{\"id\":\"$id\",\"access_token\":\"$access_token\"}" \
-          -H "Content-Type: application/json" \
-          -X GET https://users.it.teithe.gr/\~it185291/api/placements/read.php\?session_id\=$3)
+        ./scripts/print-info.mjs $(curl -f -s -d "{\"id\":\"$id\",\"access_token\":\"$access_token\"}" -H "Content-Type: application/json" -X GET https://users.it.teithe.gr/\~it185291/api/sessions/read_one.php\?session_id\=$3) \
+          && ./scripts/print-board.mjs $(curl -s -f -d "{\"id\":\"$id\",\"access_token\":\"$access_token\"}" -H "Content-Type: application/json" -X GET https://users.it.teithe.gr/\~it185291/api/placements/read.php\?session_id\=$3)
         ;;
       --create)
         curl -f -d "{\"id\":\"$id\",\"access_token\":\"$access_token\"}" \
@@ -150,10 +143,3 @@ case $1 in
     esac
     ;;
 esac
-
-
-
-# play.sh --help \n
-# play.sh --session --(help|create|read|read_one|remaining_pieces|set_next|end_game) ..args --(export|execjs|execpp) \n
-# play.sh --placement --(help|create|read) ..args --(export|execjs|execpp) \n
-# play.sh --user --(help|sign-up|validate-token|login|logout) ..args --(export|execjs|execpp) \n
