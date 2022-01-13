@@ -32,8 +32,8 @@ if (!$user->validate_token()) {
     die();
 }
 
-if (isset($_GET['id'])) {
-    $session->id = $_GET['id'];
+if (isset($_GET['session_id'])) {
+    $session->id = $_GET['session_id'];
 } else {
     http_response_code(400);
     echo json_encode(array('message' => 'Session id not provided'));

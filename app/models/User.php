@@ -121,7 +121,7 @@ class User
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $fetched_token  = $row['access_token'];
-        $this->username = $row['username'] 
+        $this->username = $row['username'];
 
         return $this->access_token === $fetched_token;
     }

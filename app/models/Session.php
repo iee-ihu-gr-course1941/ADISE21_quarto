@@ -117,7 +117,11 @@ class Session
         $this->winner        = $row['winner'];
         $this->next_piece_id = $row['next_piece'];
 
-        return $result;
+        if ($this->id==null) {
+            return false;
+        } else {
+            return $result;
+        }
     }
 
 
