@@ -4,7 +4,7 @@ A simple implementation of the quarto board game written in the standard php/mys
 You can test the api by sending requests to `https://users.it.teithe.gr/~it185291/api`
 
 ## Running locally
-The recommended way to run locally is by using docker. The following command mounts your code in a xampp container. You can find more info on how to use the container [here](https://hub.docker.com/r/tomsik68/xampp/)
+The recommended way to run locally is using via docker. The following command mounts your code in a container running xampp and serves it under the www directory. You can find more info on how to use the container [here](https://hub.docker.com/r/tomsik68/xampp/)
 ```
 docker run --name myXampp -p <SSH-PORT>:22 -p <HTTP-PORT>:80 -d -v <PATH-TO-CODE>:/www tomsik68/xampp:8
 ```
