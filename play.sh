@@ -27,7 +27,7 @@ case $1 in
                 -X GET https://users.it.teithe.gr/\~it185291/api/sessions/read.php \
                 | sed 's/"//g' | sed 's/,/ | /g' | sed 's/[{}:]/ /g'
 
-        ./print-board.mjs $(curl -s -f -d "{\"id\":\"$id\",\"access_token\":\"$access_token\"}" \
+        ./scripts/print-board.mjs $(curl -s -f -d "{\"id\":\"$id\",\"access_token\":\"$access_token\"}" \
           -H "Content-Type: application/json" \
           -X GET https://users.it.teithe.gr/\~it185291/api/placements/read.php\?session_id\=$3)
         ;;
