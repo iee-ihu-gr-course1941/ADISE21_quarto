@@ -82,3 +82,13 @@ A simple implementation of the quarto board game written in the standard php/mys
   * body:
     * id
     * access_token
+
+### Playing the game with curl
+
+* Sing up
+```
+
+```
+
+
+

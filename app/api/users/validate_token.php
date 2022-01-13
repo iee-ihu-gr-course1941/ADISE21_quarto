@@ -26,7 +26,7 @@ $user->id           = $data->id;
 $user->access_token = $data->access_token;
 
 if ($user->validate_token()) {
-    echo json_encode(array('message' => 'Token is valid'));
+    echo json_encode(array('username' => $user->username));
 } else {
     http_response_code(401);
     echo json_encode(array('message' => 'Invalid Token'));

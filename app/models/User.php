@@ -100,8 +100,8 @@ class User
 
     public function validate_token()
     {
-        $query = 'SELECT access_token FROM ' . $this->table . '
-				WHERE id = :id';
+        $query = 'SELECT username, access_token FROM ' . $this->table . '
+                  WHERE id = :id';
 
         $stmt = $this->conn->prepare($query);
 
@@ -120,7 +120,8 @@ class User
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $fetched_token = $row['access_token'];
+        $fetched_token  = $row['access_token'];
+        $this->username = $row['username'] 
 
         return $this->access_token === $fetched_token;
     }
