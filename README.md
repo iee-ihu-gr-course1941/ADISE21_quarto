@@ -4,7 +4,7 @@ A simple implementation of the quarto board game written in the standard php/mys
 You can test the api by sending requests to `https://users.it.teithe.gr/~it185291/api`
 
 ## Running locally
-The recommended way to run locally is by using docker. The following command mounts your code in a xampp container. You can find more info on how to use the container [here](https://hub.docker.com/r/tomsik68/xampp/)
+The recommended way to run locally is using via docker. The following command mounts your code in a container running xampp and serves it under the www directory. You can find more info on how to use the container [here](https://hub.docker.com/r/tomsik68/xampp/)
 ```
 docker run --name myXampp -p <SSH-PORT>:22 -p <HTTP-PORT>:80 -d -v <PATH-TO-CODE>:/www tomsik68/xampp:8
 ```
@@ -187,32 +187,32 @@ curl -f -d "{\"id\":\"$id\",\"access_token\":\"$access_token\"}" \
 ## Entities
 
 **Piece**
-* id: integer
-* attr1: 0 | 1
-* attr2: 0 | 1
-* attr3: 0 | 1
-* attr4: 0 | 1
+* id: `integer`
+* attr1: `0 | 1`
+* attr2: `0 | 1`
+* attr3: `0 | 1`
+* attr4: `0 | 1`
 
 **Placement**
 * id: integer
-* session_id: integer
-* player_id: integer
-* piece_id: integer
-* pos_x: integer - 0 .. 3
-* pos_y: integer - 0 .. 3
+* session_id: `integer`
+* player_id: `integer`
+* piece_id: `integer`
+* pos_x: `integer - 0 .. 3`
+* pos_y: `integer - 0 .. 3`
 
 **Session**
-* id: integer
-* player1_id: integer
-* player2_id: integer
-* turn: 'p1' | 'p2'
-* winner: 'p1' | 'p2'
-* next_piece_id: integer - 0 .. 15
+* id: `integer`
+* player1_id: `integer`
+* player2_id: `integer`
+* turn: `'p1' | 'p2'`
+* winner: `'p1' | 'p2'`
+* next_piece_id: `integer - 0 .. 15`
 
 **User**
-* id: integer
-* username: string
-* password: string
-* access_token: string
+* id: `integer`
+* username: `string`
+* password: `string`
+* access_token: `string`
 
 **Note:** there is no explicit "board" entity. A session's board's state can be obtained via the `/placements/read.php` endpoint with the `session_id` query parameter set to the session id of interest.
